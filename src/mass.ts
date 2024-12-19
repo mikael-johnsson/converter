@@ -1,4 +1,5 @@
-// Mass functionality
+import { checkForCommas } from "./utils";
+
 let inputBox = document.getElementById('mass-input-box') as HTMLInputElement;
 const outputBox = document.getElementById('mass-output-box') as HTMLParagraphElement;
 const convertButton = document.getElementById('mass-convert-button') as HTMLButtonElement;

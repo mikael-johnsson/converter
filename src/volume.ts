@@ -1,3 +1,5 @@
+import { checkForCommas } from './utils.ts'
+
 const volumeOutputBox = document.getElementById('volume-output-box') as HTMLParagraphElement;
 const volumeInputBox = document.getElementById('volume-input-box') as HTMLInputElement;
 const volumeConvertButton = document.getElementById('volume-convert-button') as HTMLButtonElement;
@@ -49,11 +51,6 @@ function calculateVolume(mlInput: number, toType: string, ){
             break;
         default: console.log('Please select a valid type');
     }
-}
-
-function checkForCommas(input: string ): number {
-    const transformedInput = input.replace(',', '.')
-    return parseFloat(transformedInput)
 }
 
 volumeConvertButton?.addEventListener('click', (e) => {

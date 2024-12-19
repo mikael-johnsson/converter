@@ -3,6 +3,7 @@ const currencyInputBox = document.getElementById('currency-input-box');
 const currencyOutputBox = document.getElementById('currency-output-box');
 const currencyConvertButton = document.getElementById('currency-convert-button');
 function convertCurrency() {
+    const currencyInputValue = currencyCheckForCommas(currencyInputBox.value);
     const fromType = document.getElementById('currency-from-select');
     const toType = document.getElementById('currency-to-select');
     const fromTypeValue = fromType.value;
@@ -13,20 +14,24 @@ function convertCurrency() {
     else {
         switch (fromTypeValue) {
             case "USD" /* Currency.USD */:
-                calculateUSD(parseFloat(currencyInputBox.value), toTypeValue);
+                calculateUSD(currencyInputValue, toTypeValue);
                 break;
             case "EUR" /* Currency.EUR */:
-                calculateEUR(parseFloat(currencyInputBox.value), toTypeValue);
+                calculateEUR(currencyInputValue, toTypeValue);
                 break;
             case "GBP" /* Currency.GBP */:
-                calculateGBP(parseFloat(currencyInputBox.value), toTypeValue);
+                calculateGBP(currencyInputValue, toTypeValue);
                 break;
             case "SEK" /* Currency.SEK */:
-                calculateSEK(parseFloat(currencyInputBox.value), toTypeValue);
+                calculateSEK(currencyInputValue, toTypeValue);
                 break;
-            default: console.log('Please select a valid type');
+            default: alert('Please select a valid type');
         }
     }
+}
+function currencyCheckForCommas(input) {
+    const transformedInput = input.replace(',', '.');
+    return parseFloat(transformedInput);
 }
 function calculateUSD(input, toType) {
     switch (toType) {
@@ -39,7 +44,7 @@ function calculateUSD(input, toType) {
         case "SEK" /* Currency.SEK */:
             currencyOutputBox.innerHTML = `${(input * 8.61).toFixed(2)} SEK`;
             break;
-        default: console.log('Please select a valid type');
+        default: alert('Please select a valid type');
     }
 }
 function calculateEUR(input, toType) {
@@ -53,7 +58,7 @@ function calculateEUR(input, toType) {
         case "SEK" /* Currency.SEK */:
             currencyOutputBox.innerHTML = `${(input * 10.13).toFixed(2)} SEK`;
             break;
-        default: console.log('Please select a valid type');
+        default: alert('Please select a valid type');
     }
 }
 function calculateGBP(input, toType) {
@@ -67,7 +72,7 @@ function calculateGBP(input, toType) {
         case "SEK" /* Currency.SEK */:
             currencyOutputBox.innerHTML = `${(input * 11.77).toFixed(2)} SEK`;
             break;
-        default: console.log('Please select a valid type');
+        default: alert('Please select a valid type');
     }
 }
 function calculateSEK(input, toType) {
@@ -81,7 +86,7 @@ function calculateSEK(input, toType) {
         case "GBP" /* Currency.GBP */:
             currencyOutputBox.innerHTML = `${(input * 0.085).toFixed(2)} GBP`;
             break;
-        default: console.log('Please select a valid type');
+        default: alert('Please select a valid type');
     }
 }
 currencyConvertButton === null || currencyConvertButton === void 0 ? void 0 : currencyConvertButton.addEventListener('click', (e) => {

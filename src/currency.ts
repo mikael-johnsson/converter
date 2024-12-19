@@ -1,5 +1,3 @@
-import { checkForCommas } from "./utils";
-
 const enum Currency {
     USD = 'USD',
     EUR = 'EUR',
@@ -12,7 +10,7 @@ const currencyOutputBox = document.getElementById('currency-output-box') as HTML
 const currencyConvertButton = document.getElementById('currency-convert-button') as HTMLButtonElement;
 
 function convertCurrency(): void {
-    const currencyInputValue = checkForCommas(currencyInputBox.value);
+    const currencyInputValue = currencyCheckForCommas(currencyInputBox.value);
     const fromType = document.getElementById('currency-from-select') as HTMLSelectElement;
     const toType = document.getElementById('currency-to-select') as HTMLSelectElement;
     const fromTypeValue = fromType.value as Currency;
@@ -34,9 +32,14 @@ function convertCurrency(): void {
             case Currency.SEK:
                 calculateSEK(currencyInputValue, toTypeValue);
                 break;
-            default: console.log('Please select a valid type');
+            default: alert('Please select a valid type');
         }
     }
+}
+
+function currencyCheckForCommas(input: string ): number {
+    const transformedInput = input.replace(',', '.')
+    return parseFloat(transformedInput)
 }
 
 function calculateUSD(input: number, toType: Currency): void {
@@ -50,7 +53,7 @@ function calculateUSD(input: number, toType: Currency): void {
         case Currency.SEK:
             currencyOutputBox.innerHTML = `${(input * 8.61).toFixed(2)} SEK`
             break;
-        default: console.log('Please select a valid type');
+        default: alert('Please select a valid type');
     }
 
 }
@@ -66,7 +69,7 @@ function calculateEUR(input: number, toType: Currency): void {
         case Currency.SEK:
             currencyOutputBox.innerHTML = `${(input * 10.13).toFixed(2)} SEK`
             break;
-        default: console.log('Please select a valid type');
+        default: alert('Please select a valid type');
     }
 }
 
@@ -81,7 +84,7 @@ function calculateGBP(input: number, toType: Currency): void {
         case Currency.SEK:
             currencyOutputBox.innerHTML = `${(input * 11.77).toFixed(2)} SEK`
             break;
-        default: console.log('Please select a valid type');
+        default: alert('Please select a valid type');
     }
 }
 
@@ -96,7 +99,7 @@ function calculateSEK(input: number, toType: Currency): void {
         case Currency.GBP:
             currencyOutputBox.innerHTML = `${(input * 0.085).toFixed(2)} GBP`
             break;
-        default: console.log('Please select a valid type');
+        default: alert('Please select a valid type');  
     }
 }
 

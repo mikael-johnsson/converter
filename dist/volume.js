@@ -3,7 +3,7 @@ const volumeOutputBox = document.getElementById('volume-output-box');
 const volumeInputBox = document.getElementById('volume-input-box');
 const volumeConvertButton = document.getElementById('volume-convert-button');
 function transformInput() {
-    const inputValue = checkForCommas(volumeInputBox.value);
+    const inputValue = volumeCheckForCommas(volumeInputBox.value);
     const fromType = document.getElementById('volume-from-select');
     const toType = document.getElementById('volume-to-select');
     const fromTypeValue = fromType.value;
@@ -26,11 +26,15 @@ function transformInput() {
             case 'cup':
                 mlValue = 237;
                 break;
-            default: console.log('Please select a valid type');
+            default: alert('Please select a valid type');
         }
         mlValue = mlValue * inputValue;
         calculateVolume(mlValue, toTypeValue);
     }
+}
+function volumeCheckForCommas(input) {
+    const transformedInput = input.replace(',', '.');
+    return parseFloat(transformedInput);
 }
 function calculateVolume(mlInput, toType) {
     switch (toType) {
@@ -46,12 +50,8 @@ function calculateVolume(mlInput, toType) {
         case 'cup':
             volumeOutputBox.innerHTML = `${(mlInput / 237).toFixed(2)} cups`;
             break;
-        default: console.log('Please select a valid type');
+        default: alert('Please select a valid type');
     }
-}
-function checkForCommas(input) {
-    const transformedInput = input.replace(',', '.');
-    return parseFloat(transformedInput);
 }
 volumeConvertButton === null || volumeConvertButton === void 0 ? void 0 : volumeConvertButton.addEventListener('click', (e) => {
     e.preventDefault();

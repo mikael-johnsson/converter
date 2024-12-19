@@ -1,11 +1,9 @@
-import { checkForCommas } from './utils.ts'
-
 const volumeOutputBox = document.getElementById('volume-output-box') as HTMLParagraphElement;
 const volumeInputBox = document.getElementById('volume-input-box') as HTMLInputElement;
 const volumeConvertButton = document.getElementById('volume-convert-button') as HTMLButtonElement;
 
 function transformInput(){
-    const inputValue = checkForCommas(volumeInputBox.value)
+    const inputValue = volumeCheckForCommas(volumeInputBox.value)
     const fromType = document.getElementById('volume-from-select') as HTMLSelectElement
     const toType = document.getElementById('volume-to-select') as HTMLSelectElement
     const fromTypeValue = fromType.value
@@ -28,11 +26,16 @@ function transformInput(){
             case 'cup':
                 mlValue = 237
                 break;
-            default: console.log('Please select a valid type');
+            default: alert('Please select a valid type');
         }
         mlValue = mlValue * inputValue
         calculateVolume(mlValue, toTypeValue)
     }
+}
+
+function volumeCheckForCommas(input: string ): number {
+    const transformedInput = input.replace(',', '.')
+    return parseFloat(transformedInput)
 }
 
 function calculateVolume(mlInput: number, toType: string, ){
@@ -49,7 +52,7 @@ function calculateVolume(mlInput: number, toType: string, ){
         case 'cup':
             volumeOutputBox.innerHTML = `${(mlInput / 237).toFixed(2)} cups`
             break;
-        default: console.log('Please select a valid type');
+        default: alert('Please select a valid type');
     }
 }
 

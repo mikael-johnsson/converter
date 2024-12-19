@@ -1,5 +1,3 @@
-import { checkForCommas } from "./utils";
-
 let inputBox = document.getElementById('mass-input-box') as HTMLInputElement;
 const outputBox = document.getElementById('mass-output-box') as HTMLParagraphElement;
 const convertButton = document.getElementById('mass-convert-button') as HTMLButtonElement;
@@ -10,7 +8,7 @@ function checkTypes(e: MouseEvent): void {
     const toTarget = document.getElementById('mass-to-select') as HTMLSelectElement
     const fromType = fromTarget.value
     const toType = toTarget.value
-    let inputValue: number = parseInt(inputBox.value)
+    let inputValue: number = massCheckForCommas(inputBox.value)
 
     switch(fromType) {
         case 'lbs':
@@ -75,11 +73,14 @@ function checkTypes(e: MouseEvent): void {
             }
             break;
         default:
-            console.log('default')
+            alert('Please select a valid type');
     }
 }
 
-
+function massCheckForCommas(input: string ): number {
+    const transformedInput = input.replace(',', '.')
+    return parseFloat(transformedInput)
+}
 
 function convertLbsToKg(input: number, toType: string) {
     const convertedValue = (input * 0.453592).toFixed(2)

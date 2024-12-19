@@ -4,12 +4,18 @@ body {
     background-color: #dfd5d5;
 }
 
+header {
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
 .heading {
     color: rgb(34, 34, 151);
 }
 
 .row{
     justify-content: center;
+    margin-bottom: 35px;
 }
 
 .input-container {

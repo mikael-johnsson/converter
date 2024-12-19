@@ -1,0 +1,52 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #dfd5d5;
+}
+
+.heading {
+    color: rgb(34, 34, 151);
+}
+
+.row{
+    justify-content: center;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.btn {
+    margin: auto;
+}
+
+.btn-primary {
+    background-color: rgb(13, 13, 201);
+}
+
+label {
+    margin-top: 12px;
+}
+
+.box {
+    width: 180px;
+    height:  40px;
+    border: 2px solid black;
+    border-radius: 12px;
+    padding: 6px;
+    background-color: #dfd5d5;
+}
+
+/* Volume */
+#volume-output-box {
+    margin-bottom: 0px;
+}
+
+/* Mass */
+#mass-output-box {
+    margin-bottom: 0px;
+}

@@ -1,16 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 /* General styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: Roboto, sans-serif;
     background-color: #dfd5d5;
 }
 
 header {
     margin-bottom: 20px;
     padding: 20px;
+    background-color: #c4b1b1;
 }
 
 .heading {
-    color: rgb(34, 34, 151);
+    color: rgb(54, 48, 48);
+}
+
+h2 {
+    margin-bottom: 0;
+    margin-top: 8px;
 }
 
 .row{
@@ -26,16 +34,25 @@ header {
     margin-top: 20px;
 }
 
+.form-select {
+    margin-top: 8px;
+}
+
 .btn {
     margin: 10px auto;
 }
 
 .btn-primary {
-    background-color: rgb(13, 13, 201);
+    background-color: rgb(96, 96, 170);
+}
+
+.btn-success {
+    background-color: rgb(108, 124, 108);
 }
 
 label {
     margin-top: 12px;
+    font-weight: 600;
 }
 
 .box {

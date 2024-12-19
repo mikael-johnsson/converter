@@ -73,10 +73,41 @@
                 <p class="box" id="mass-output-box"></p>
             </div>    
         </form>
+
+        <form class="row">
+            <h2>Currency</h2>
+            <div class="input-container col-md-3">
+                <label for="from-select">From:</label>
+                <select name="from-select" class="form-select" id="currency-from-select">
+                    <option value="Euro">Euro</option>
+                    <option value="USD">USD</option>
+                    <option value="SEK">SEK</option>
+                    <option value="GBP">GBP</option>
+                </select>
+                <label for="currency-convert-input">Value to convert</label>
+                <input type="text" class="box" id="currency-input-box">
+            </div> 
+            <div class="input-container col-md-3">
+                <button class="btn btn-success" id="currency-switch-button">Switch</button>
+                <button class="btn btn-primary" id="currency-convert-button">Convert</button>
+            </div> 
+            <div class="input-container col-md-3">
+                <label for="to-select">To:</label>
+                <select name="to-select" class="form-select" id="currency-to-select">
+                    <option value="Euro">Euro</option>
+                    <option value="USD">USD</option>
+                    <option value="SEK">SEK</option>
+                    <option value="GBP">GBP</option>
+                </select>    
+                <label for="currency-output-box">Converted result</label>
+                <p class="box" id="currency-output-box"></p>
+            </div>    
+        </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="dist/mass.js"></script>
     <script src="dist/volume.js"></script>
     <script src="dist/switch.js"></script>
+    <script src="dist/currency.js"></script>
 </body>
 </html>

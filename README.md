@@ -6,7 +6,7 @@ If you really need to convert some common day value but don't want:
 
 Then this converter is something for you! Not bad, but absolutely not the best.
 
-![Image of the sites responsiveness](src\images\converter_responsiveness.jpg)
+![Image of the sites responsiveness](src\images\converter_responsiveness2.jpg)
 
 ## Usage
 The user is met with the entire content of the application. The three (as of now) different types of data to convert - volume, mass and currency.

@@ -1,5 +1,6 @@
 const volumeSwitchButton = document.getElementById('volume-switch-button') as HTMLButtonElement
 const massSwitchButton = document.getElementById('mass-switch-button') as HTMLButtonElement
+const currencySwitchButton = document.getElementById('currency-switch-button') as HTMLButtonElement
 
 function switchTypes(e: MouseEvent): void {
     e.preventDefault()
@@ -13,6 +14,9 @@ function switchTypes(e: MouseEvent): void {
     } else if(button.id === 'mass-switch-button'){
         fromSelect = document.getElementById('mass-from-select') as HTMLSelectElement | null;
         toSelect = document.getElementById('mass-to-select') as HTMLSelectElement | null;
+    } else if(button.id === 'currency-switch-button'){
+        fromSelect = document.getElementById('currency-from-select') as HTMLSelectElement | null;
+        toSelect = document.getElementById('currency-to-select') as HTMLSelectElement | null;
     } else {
         return;
     }
@@ -26,3 +30,4 @@ function switchTypes(e: MouseEvent): void {
 
 volumeSwitchButton?.addEventListener('click', switchTypes)
 massSwitchButton?.addEventListener('click', switchTypes)
+currencySwitchButton?.addEventListener('click', switchTypes)

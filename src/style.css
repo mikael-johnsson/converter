@@ -16,6 +16,10 @@ header {
     color: rgb(54, 48, 48);
 }
 
+.main-container {
+    display: flex;;
+}
+
 h2 {
     margin-bottom: 0;
     margin-top: 8px;
@@ -77,4 +81,12 @@ label {
 /* Mass */
 #mass-output-box {
     margin-bottom: 0px;
+}
+
+/* Aside */
+aside {
+    margin: 15px;
+    order: 2;
+    height: 100%;
+    width: 20%;
 }

@@ -32,7 +32,7 @@ a {
 
 .row{
     justify-content: center;
-    margin-bottom: 35px;
+    margin-bottom: 55px;
 }
 
 .input-container {
@@ -89,4 +89,44 @@ aside {
     order: 2;
     height: 100%;
     width: 20%;
+}
+
+/* Media Queries */
+@media (min-width: 768px) {
+    .main-container {
+        padding: 35px;
+    }
+
+    aside {
+        margin: 8px;
+    }
+
+    .row {
+        padding: 0;
+        gap: 6px;
+    }
+
+    .input-container {
+        padding: 0;
+    }
+
+    label {
+        margin-bottom: 8px;
+    }
+}
+
+@media (min-width: 992px) {
+    .main-container {
+        padding: 45px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .main-container {
+        padding: 65px;
+    }
+
+    .row {
+        margin-bottom: 75px;
+    }
 }

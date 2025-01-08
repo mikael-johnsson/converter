@@ -11,10 +11,10 @@ const gbpURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/late
 const sekURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/latest/SEK`
 
 let usdRates: ExchangeRates = {
-    USD: 1,
-    EUR: 2,
-    GBP: 3,
-    SEK: 4,
+    USD: 0,
+    EUR: 0,
+    GBP: 0,
+    SEK: 0,
 }
 
 let eurRates: ExchangeRates = {
@@ -42,6 +42,7 @@ async function getExchangeRates(url: string, countryRates: ExchangeRates): Promi
     try{
         const response = await fetch(url);
         const data = await response.json();
+        console.log("API request sent");
         countryRates.USD = data.conversion_rates.USD;
         countryRates.EUR = data.conversion_rates.EUR;
         countryRates.GBP = data.conversion_rates.GBP;
@@ -76,7 +77,16 @@ async function convertCurrency(): Promise<void> {
     } else {
         switch(fromTypeValue) {
             case Currency.USD:
-                let newUsdRates = await getExchangeRates(usdURL, usdRates);
+                let newUsdRates;
+                let usdCookies = checkCookies("USDcurrency");
+                if(!usdCookies) {
+                    newUsdRates = await getExchangeRates(usdURL, usdRates);
+                    setCookies(newUsdRates);
+                    console.log("New USD rates: ", newUsdRates);
+                } else {
+                    newUsdRates = usdCookies;
+                    console.log("USD rates from cookies: ", newUsdRates);
+                }
                 calculateUSD(currencyInputValue, toTypeValue, newUsdRates);
                 break;
             case Currency.EUR:
@@ -168,20 +178,29 @@ currencyConvertButton?.addEventListener('click', (e) => {
 })
 
 function setCookies(rates: ExchangeRates): void {
-    let today = new Date();
-    today.setTime(today.getTime() + (0.5 * 3600 * 1000));
-    document.cookie = `USDcurrency={USD=${rates.USD}, EUR=${rates.EUR}, GBP=${rates.GBP}, SEK=${rates.SEK}}; expires=${today.toUTCString()}; path=/`;
+    // Set cookie to expire in 30 minutes
+    let date = new Date();
+    date.setTime(date.getTime() + (0.5 * 3600 * 1000));
+    // Set cookie
+    const stringObject = JSON.stringify(rates);
+    document.cookie = `USDcurrency=${stringObject}; expires=${date.toUTCString()}; path=/`;
 }
 
-function checkCookies(currencyName: string) {
-    let cookieArray = document.cookie.split(";");
-    for(let i = 0; i < cookieArray.length; i++) {
-        if(cookieArray[i].includes(currencyName)){
-            let cookieObject = cookieArray[i].split("{")[1];
-            console.log(cookieObject);
-        }
-    }   
+function checkCookies(currencyName: string): ExchangeRates | boolean {
+    const cDecoded = decodeURIComponent(document.cookie);
+    const cArray = cDecoded.split("; ")
+    let rates = {} as ExchangeRates;
+    cArray.forEach(cookie => {
+        if(cookie.indexOf(currencyName) == 0){
+            const cookiePairs = cookie.split("=")[1];
+            rates = JSON.parse(cookiePairs);
+            return rates;
+        };
+    });
+    return false;
 }
 
-checkCookies("USDcurrency");
+function deleteCookie(name: string): void {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+}
 

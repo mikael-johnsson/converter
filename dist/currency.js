@@ -13,10 +13,10 @@ const eurURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/late
 const gbpURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/latest/GBP`;
 const sekURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/latest/SEK`;
 let usdRates = {
-    USD: 0,
-    EUR: 0,
-    GBP: 0,
-    SEK: 0,
+    USD: 1,
+    EUR: 2,
+    GBP: 3,
+    SEK: 4,
 };
 let eurRates = {
     USD: 0,
@@ -152,4 +152,19 @@ currencyConvertButton === null || currencyConvertButton === void 0 ? void 0 : cu
     e.preventDefault();
     convertCurrency();
 });
+function setCookies(rates) {
+    let today = new Date();
+    today.setTime(today.getTime() + (0.5 * 3600 * 1000));
+    document.cookie = `USDcurrency={USD=${rates.USD}, EUR=${rates.EUR}, GBP=${rates.GBP}, SEK=${rates.SEK}}; expires=${today.toUTCString()}; path=/`;
+}
+function checkCookies(currencyName) {
+    let cookieArray = document.cookie.split(";");
+    for (let i = 0; i < cookieArray.length; i++) {
+        if (cookieArray[i].includes(currencyName)) {
+            let cookieObject = cookieArray[i].split("{")[1];
+            console.log(cookieObject);
+        }
+    }
+}
+checkCookies("USDcurrency");
 //# sourceMappingURL=currency.js.map

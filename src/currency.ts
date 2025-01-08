@@ -11,10 +11,10 @@ const gbpURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/late
 const sekURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/latest/SEK`
 
 let usdRates: ExchangeRates = {
-    USD: 0,
-    EUR: 0,
-    GBP: 0,
-    SEK: 0,
+    USD: 1,
+    EUR: 2,
+    GBP: 3,
+    SEK: 4,
 }
 
 let eurRates: ExchangeRates = {
@@ -37,7 +37,6 @@ let sekRates: ExchangeRates = {
     GBP: 0,
     SEK: 0,
 }
-
 
 async function getExchangeRates(url: string, countryRates: ExchangeRates): Promise<ExchangeRates> {
     try{
@@ -168,4 +167,21 @@ currencyConvertButton?.addEventListener('click', (e) => {
     convertCurrency();
 })
 
+function setCookies(rates: ExchangeRates): void {
+    let today = new Date();
+    today.setTime(today.getTime() + (0.5 * 3600 * 1000));
+    document.cookie = `USDcurrency={USD=${rates.USD}, EUR=${rates.EUR}, GBP=${rates.GBP}, SEK=${rates.SEK}}; expires=${today.toUTCString()}; path=/`;
+}
+
+function checkCookies(currencyName: string) {
+    let cookieArray = document.cookie.split(";");
+    for(let i = 0; i < cookieArray.length; i++) {
+        if(cookieArray[i].includes(currencyName)){
+            let cookieObject = cookieArray[i].split("{")[1];
+            console.log(cookieObject);
+        }
+    }   
+}
+
+checkCookies("USDcurrency");
 

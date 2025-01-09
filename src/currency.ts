@@ -11,31 +11,31 @@ const gbpURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/late
 const sekURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/latest/SEK`
 
 let usdRates: ExchangeRates = {
-    USD: 0,
-    EUR: 0,
-    GBP: 0,
-    SEK: 0,
+    USD: 1,
+    EUR: 0.9696,
+    GBP: 0.8084,
+    SEK: 11.1599,
 }
 
 let eurRates: ExchangeRates = {
-    USD: 0,
-    EUR: 0,
-    GBP: 0,
-    SEK: 0,
+    USD: 1.0314,
+    EUR: 1,
+    GBP: 0.8339,
+    SEK: 11.5062,
 }
 
 let gbpRates: ExchangeRates = {
-    USD: 0,
-    EUR: 0,
-    GBP: 0,
-    SEK: 0,
+    USD: 1.237,
+    EUR: 1.1992,
+    GBP: 1,
+    SEK: 13.793,
 }
 
 let sekRates: ExchangeRates = {
-    USD: 0,
-    EUR: 0,
-    GBP: 0,
-    SEK: 0,
+    USD: 0.08961,
+    EUR: 0.08691,
+    GBP: 0.0725,
+    SEK: 1,
 }
 
 const enum Currency {
@@ -55,8 +55,9 @@ const currencyConvertButton = document.getElementById('currency-convert-button')
  * @param url url to fetch exchange rates from ExchangeRate-api
  * @param countryRates ExchangeRates interface to store the fetched rates
  * @returns ExchangeRates object with the fetched rates
+ * If an error occurs, the function will return the hardcoded rates for the currency
  */
-async function getExchangeRates(url: string, countryRates: ExchangeRates): Promise<ExchangeRates> {
+async function getExchangeRates(url: string, countryRates: ExchangeRates, country: string): Promise<ExchangeRates> {
     try{
         const response = await fetch(url);
         const data = await response.json();
@@ -65,7 +66,21 @@ async function getExchangeRates(url: string, countryRates: ExchangeRates): Promi
         countryRates.GBP = data.conversion_rates.GBP;
         countryRates.SEK = data.conversion_rates.SEK;
     } catch(error){
-        console.log('Error: ', error);
+        console.log('Error in fetching values from API: ', error);
+        switch(country) {
+            case "USD":
+                countryRates = usdRates;
+                break;
+            case "EUR":
+                countryRates = eurRates;
+                break;
+            case "GBP":
+                countryRates = gbpRates;
+                break;
+            case "SEK":
+                countryRates = sekRates;
+                break;
+        }
     }
     return countryRates;
 }
@@ -93,7 +108,7 @@ async function convertCurrency(): Promise<void> {
                 let newUsdRates;
                 let usdCookies = checkCookies("USDcurrency");
                 if(isRatesEmpty(usdCookies)) {
-                    newUsdRates = await getExchangeRates(usdURL, usdRates);
+                    newUsdRates = await getExchangeRates(usdURL, usdRates, "USD");
                     setCookies(newUsdRates, "USDcurrency");
                 } else {
                     newUsdRates = usdCookies;
@@ -104,17 +119,18 @@ async function convertCurrency(): Promise<void> {
                 let newEurRates;
                 let eurCookies = checkCookies("EURcurrency");
                 if(isRatesEmpty(eurCookies)) {
-                    newEurRates = await getExchangeRates(eurURL, eurRates);
+                    newEurRates = await getExchangeRates(eurURL, eurRates, "EUR");
                     setCookies(newEurRates, "EURcurrency");
                 } else {
-                    newEurRates = eurCookies;                }
+                    newEurRates = eurCookies;                
+                }
                 calculateEUR(currencyInputValue, toTypeValue, newEurRates);
                 break;
             case Currency.GBP:
                 let newGbpRates;
                 let gbpCookies = checkCookies("GBPcurrency");
                 if(isRatesEmpty(gbpCookies)) {
-                    newGbpRates = await getExchangeRates(gbpURL, gbpRates);
+                    newGbpRates = await getExchangeRates(gbpURL, gbpRates, "GBP");
                     setCookies(newGbpRates, "GBPcurrency");
                 } else {
                     newGbpRates = gbpCookies;
@@ -125,7 +141,7 @@ async function convertCurrency(): Promise<void> {
                 let newSekRates;
                 let sekCookies = checkCookies("SEKcurrency");
                 if(isRatesEmpty(sekCookies)) {
-                    newSekRates = await getExchangeRates(sekURL, sekRates);
+                    newSekRates = await getExchangeRates(sekURL, sekRates, "SEK");
                     setCookies(newSekRates, "SEKcurrency");
                 } else {
                     newSekRates = sekCookies;

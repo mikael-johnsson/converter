@@ -8,33 +8,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const usdURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/latest/USD`;
+const usdURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/latest/U`;
 const eurURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/latest/EUR`;
 const gbpURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/latest/GBP`;
 const sekURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/latest/SEK`;
 let usdRates = {
-    USD: 0,
-    EUR: 0,
-    GBP: 0,
-    SEK: 0,
+    USD: 2,
+    EUR: 0.9696,
+    GBP: 0.8084,
+    SEK: 11.1599,
 };
 let eurRates = {
-    USD: 0,
-    EUR: 0,
-    GBP: 0,
-    SEK: 0,
+    USD: 1.0314,
+    EUR: 1,
+    GBP: 0.8339,
+    SEK: 11.5062,
 };
 let gbpRates = {
-    USD: 0,
-    EUR: 0,
-    GBP: 0,
-    SEK: 0,
+    USD: 1.237,
+    EUR: 1.1992,
+    GBP: 1,
+    SEK: 13.793,
 };
 let sekRates = {
-    USD: 0,
-    EUR: 0,
-    GBP: 0,
-    SEK: 0,
+    USD: 0.08961,
+    EUR: 0.08691,
+    GBP: 0.0725,
+    SEK: 1,
 };
 // Currency converter elements
 const currencyInputBox = document.getElementById('currency-input-box');
@@ -46,7 +46,7 @@ const currencyConvertButton = document.getElementById('currency-convert-button')
  * @param countryRates ExchangeRates interface to store the fetched rates
  * @returns ExchangeRates object with the fetched rates
  */
-function getExchangeRates(url, countryRates) {
+function getExchangeRates(url, countryRates, country) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const response = yield fetch(url);
@@ -57,8 +57,23 @@ function getExchangeRates(url, countryRates) {
             countryRates.SEK = data.conversion_rates.SEK;
         }
         catch (error) {
-            console.log('Error: ', error);
+            console.log('Error in fetching values from API: ', error);
+            switch (country) {
+                case "USD":
+                    countryRates = usdRates;
+                    break;
+                case "EUR":
+                    countryRates = eurRates;
+                    break;
+                case "GBP":
+                    countryRates = gbpRates;
+                    break;
+                case "SEK":
+                    countryRates = sekRates;
+                    break;
+            }
         }
+        console.log('Rates fetched: ', countryRates);
         return countryRates;
     });
 }
@@ -86,48 +101,52 @@ function convertCurrency() {
                     let newUsdRates;
                     let usdCookies = checkCookies("USDcurrency");
                     if (isRatesEmpty(usdCookies)) {
-                        newUsdRates = yield getExchangeRates(usdURL, usdRates);
+                        newUsdRates = yield getExchangeRates(usdURL, usdRates, "USD");
                         setCookies(newUsdRates, "USDcurrency");
                     }
                     else {
                         newUsdRates = usdCookies;
                     }
+                    console.log(newUsdRates);
                     calculateUSD(currencyInputValue, toTypeValue, newUsdRates);
                     break;
                 case "EUR" /* Currency.EUR */:
                     let newEurRates;
                     let eurCookies = checkCookies("EURcurrency");
                     if (isRatesEmpty(eurCookies)) {
-                        newEurRates = yield getExchangeRates(eurURL, eurRates);
+                        newEurRates = yield getExchangeRates(eurURL, eurRates, "EUR");
                         setCookies(newEurRates, "EURcurrency");
                     }
                     else {
                         newEurRates = eurCookies;
                     }
+                    console.log(newEurRates);
                     calculateEUR(currencyInputValue, toTypeValue, newEurRates);
                     break;
                 case "GBP" /* Currency.GBP */:
                     let newGbpRates;
                     let gbpCookies = checkCookies("GBPcurrency");
                     if (isRatesEmpty(gbpCookies)) {
-                        newGbpRates = yield getExchangeRates(gbpURL, gbpRates);
+                        newGbpRates = yield getExchangeRates(gbpURL, gbpRates, "GBP");
                         setCookies(newGbpRates, "GBPcurrency");
                     }
                     else {
                         newGbpRates = gbpCookies;
                     }
+                    console.log(newGbpRates);
                     calculateGBP(currencyInputValue, toTypeValue, newGbpRates);
                     break;
                 case "SEK" /* Currency.SEK */:
                     let newSekRates;
                     let sekCookies = checkCookies("SEKcurrency");
                     if (isRatesEmpty(sekCookies)) {
-                        newSekRates = yield getExchangeRates(sekURL, sekRates);
+                        newSekRates = yield getExchangeRates(sekURL, sekRates, "SEK");
                         setCookies(newSekRates, "SEKcurrency");
                     }
                     else {
                         newSekRates = sekCookies;
                     }
+                    console.log(newSekRates);
                     calculateSEK(currencyInputValue, toTypeValue, newSekRates);
                     break;
                 default: alert('Please select a valid type');

@@ -1,164 +1,78 @@
-let inputBox = document.getElementById('mass-input-box') as HTMLInputElement;
-const outputBox = document.getElementById('mass-output-box') as HTMLParagraphElement;
-const convertButton = document.getElementById('mass-convert-button') as HTMLButtonElement;
+const massInputBox = document.getElementById('mass-input-box') as HTMLInputElement;
+const massOutputBox = document.getElementById('mass-output-box') as HTMLParagraphElement;
+const massConvertButton = document.getElementById('mass-convert-button') as HTMLButtonElement;
 
+
+/**
+ * Checks the types of mass to convert from and to
+ * and converts the input to grams
+ * @param e event from the button click
+ */
 function checkTypes(e: MouseEvent): void {
     e.preventDefault();
-    const fromTarget = document.getElementById('mass-from-select') as HTMLSelectElement
-    const toTarget = document.getElementById('mass-to-select') as HTMLSelectElement
-    const fromType = fromTarget.value
-    const toType = toTarget.value
-    let inputValue: number = massCheckForCommas(inputBox.value)
+    const fromType = document.getElementById('mass-from-select') as HTMLSelectElement
+    const toType = document.getElementById('mass-to-select') as HTMLSelectElement
+    const fromTypeValue = fromType.value
+    const toTypeValue = toType.value
+    let inputValue: number = massCheckForCommas(massInputBox.value)
 
-    switch(fromType) {
-        case 'lbs':
-            switch(toType) {
-                case 'kilo':
-                    convertLbsToKg(inputValue, toType)
-                    break;
-                case 'grams':
-                    convertLbsToGrams(inputValue, toType)
-                    break;
-                case 'ounce':
-                    convertLbsToOunce(inputValue, toType)
-                    break;
-                default:
-                    alert('Please select two different types');
-                    break;
-            }
-            break;
-        case 'kilo':
-            switch(toType) {
-                case 'lbs':
-                    convertKgToLbs(inputValue, toType)
-                    break;
-                case 'ounce':
-                    convertKgToOunce(inputValue, toType)
-                    break;
-                case 'grams':
-                    convertKgToGrams(inputValue, toType)
-                    break;
-                default: alert('Please select two different types');
-                    break;
-            }
-            break;
-        case 'grams':
-            switch(toType) {
-                case 'lbs':
-                    convertGramsToLbs(inputValue, toType)
-                    break;
-                case 'kilo':
-                    convertGramsToKg(inputValue, toType)
-                    break;
-                case 'ounce':
-                    convertGramsToOunce(inputValue, toType)
-                    break;
-                default: alert('Please select two different types');
-                    break;
-            }
-            break;
-        case 'ounce':
-            switch(toType) {
-                case 'lbs':
-                    convertOunceToLbs(inputValue, toType)
-                    break;
-                case 'kilo':
-                    convertOunceToKg(inputValue, toType)
-                    break;
-                case 'grams':
-                    convertOunceToGrams(inputValue, toType)
-                    break;
-                default: alert('Please select two different types');
+    let gValue = 0;
+
+    if(fromTypeValue == toTypeValue) {
+        alert('Please select two different types');
+    } else {
+        switch(fromTypeValue) {
+            case 'lbs':
+                gValue = 453.592
                 break;
-            }
-            break;
-        default:
-            alert('Please select a valid type');
+            case 'kilo':
+                gValue = 1000
+                break;
+            case 'grams':
+                gValue = 1
+                break;
+            case 'ounce':
+                gValue = 28.3495
+                break;
+            default: alert('Please select a valid type');
+        }
+        gValue = gValue * inputValue
     }
 }
 
+/**
+ * 
+ * @param input the input value from the user
+ * @returns value of the input with commas replaced by dots
+ */
 function massCheckForCommas(input: string ): number {
     const transformedInput = input.replace(',', '.')
     return parseFloat(transformedInput)
 }
 
-function convertLbsToKg(input: number, toType: string) {
-    const convertedValue = (input * 0.453592).toFixed(2)
-    const convertedNumberValue = parseFloat(convertedValue)
-    displayConvertedValue(convertedNumberValue, toType)
-}
 
-function convertKgToLbs(input: number, toType: string) {
-    const convertedValue = (input * 2.20462).toFixed(2)
-    const convertedNumberValue = parseFloat(convertedValue)
-    displayConvertedValue(convertedNumberValue, toType)
-}
-
-function convertLbsToGrams(input: number, toType: string) {
-    const convertedValue = (input * 453.592).toFixed(0)
-    const convertedNumberValue = parseFloat(convertedValue)
-    displayConvertedValue(convertedNumberValue, toType)
-}
-
-function convertKgToGrams(input: number, toType: string) {
-    const convertedValue = (input * 1000).toFixed(0)
-    const convertedNumberValue = parseFloat(convertedValue)
-    displayConvertedValue(convertedNumberValue, toType)
-}
-
-function convertOunceToLbs(input: number, toType: string) {
-    const convertedValue = (input * 0.0625).toFixed(2)
-    const convertedNumberValue = parseFloat(convertedValue)
-    displayConvertedValue(convertedNumberValue, toType)
-}
-
-function convertOunceToKg(input: number, toType: string) {
-    const convertedValue = (input * 0.0283495).toFixed(2)
-    const convertedNumberValue = parseFloat(convertedValue)
-    displayConvertedValue(convertedNumberValue, toType)
-}
-
-function convertOunceToGrams(input: number, toType: string) {
-    const convertedValue = (input * 28.3495).toFixed(0)
-    const convertedNumberValue = parseFloat(convertedValue)
-    displayConvertedValue(convertedNumberValue, toType)
-}
-
-function convertLbsToOunce(input: number, toType: string){
-    const convertedValue = (input * 16).toFixed(2)
-    const convertedNumberValue = parseFloat(convertedValue)
-    displayConvertedValue(convertedNumberValue, toType)
-}
-
-function convertKgToOunce(input: number, toType: string){
-    const convertedValue = (input * 35.274).toFixed(2)
-    const convertedNumberValue = parseFloat(convertedValue)
-    displayConvertedValue(convertedNumberValue, toType)
-}
-
-function convertGramsToLbs(input: number, toType: string){
-    const convertedValue = (input * 0.00220462).toFixed(4)
-    const convertedNumberValue = parseFloat(convertedValue)
-    displayConvertedValue(convertedNumberValue, toType)
-}
-
-function convertGramsToKg(input: number, toType: string){
-    const convertedValue = (input * 0.001).toFixed(4)
-    const convertedNumberValue = parseFloat(convertedValue)
-    displayConvertedValue(convertedNumberValue, toType)
-}
-
-function convertGramsToOunce(input: number, toType: string){
-    const convertedValue = (input * 0.035274).toFixed(2)
-    const convertedNumberValue = parseFloat(convertedValue)
-    displayConvertedValue(convertedNumberValue, toType)
-}
-
-
-function displayConvertedValue(value: number, toType: string) {
-    if (outputBox) {
-        outputBox.innerHTML = `${value} ${toType}`
+/**
+ * Calculates the mass in the desired type and displays it
+ * @param input the input value from the user
+ * @param toType type of mass to convert to
+ */
+function calculateMass(input: number, toType: string){
+    switch(toType){
+        case 'lbs':
+            massOutputBox.innerHTML = `${(input / 453.592).toFixed(2)} lbs`
+            break;
+        case 'kilo':
+            massOutputBox.innerHTML = `${(input / 1000).toFixed(2)} kilos`
+            break;
+        case 'grams':
+            massOutputBox.innerHTML = `${(input).toFixed(0)} grams`
+            break;
+        case 'ounce':
+            massOutputBox.innerHTML = `${(input / 28.3495).toFixed(2)} ounces`
+            break;
+        default: alert('Please select a valid type');
     }
 }
 
-convertButton?.addEventListener('click', checkTypes)
+// Eventlistener for the convert button
+massConvertButton?.addEventListener('click', checkTypes)

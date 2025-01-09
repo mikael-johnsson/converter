@@ -3,11 +3,11 @@ const volumeInputBox = document.getElementById('volume-input-box') as HTMLInputE
 const volumeConvertButton = document.getElementById('volume-convert-button') as HTMLButtonElement;
 
 function transformInput(){
-    const inputValue = volumeCheckForCommas(volumeInputBox.value)
     const fromType = document.getElementById('volume-from-select') as HTMLSelectElement
     const toType = document.getElementById('volume-to-select') as HTMLSelectElement
     const fromTypeValue = fromType.value
     const toTypeValue = toType.value
+    const inputValue: number = volumeCheckForCommas(volumeInputBox.value)
 
     let mlValue = 0;
     if(fromTypeValue == toTypeValue) {

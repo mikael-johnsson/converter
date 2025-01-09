@@ -16,14 +16,12 @@ Each type has four different values to convert to each other. Since you can't co
 The values are: 
 <br>
 *Volume*
-
 - Liter
 - Deciliter
 - Gallon
 - Cup
 
 *Mass*
-
 - Kilo
 - Lbs
 - Gram
@@ -35,7 +33,7 @@ The values are:
 - GBP
 - SEK
 
-As the converting values are hardcoded - no real time updates to currency values are made. The conversion is therefore an estimate.
+The currency conversion rates are updated every 30 minutes, some real time differences are possible.
 
 ## Technologies
 Technologies used are:
@@ -43,6 +41,7 @@ Technologies used are:
 - CSS
 - Typescript
 - Bootstrap
+- ExchangeRate API
 - GitHub pages
 
 

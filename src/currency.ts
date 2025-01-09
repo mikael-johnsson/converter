@@ -49,6 +49,7 @@ const enum Currency {
 const currencyInputBox = document.getElementById('currency-input-box') as HTMLInputElement;
 const currencyOutputBox = document.getElementById('currency-output-box') as HTMLParagraphElement;
 const currencyConvertButton = document.getElementById('currency-convert-button') as HTMLButtonElement;
+const warningP = document.getElementById('currency-warning-text') as HTMLParagraphElement;
 
 /**
  * 
@@ -65,6 +66,7 @@ async function getExchangeRates(url: string, countryRates: ExchangeRates, countr
         countryRates.EUR = data.conversion_rates.EUR;
         countryRates.GBP = data.conversion_rates.GBP;
         countryRates.SEK = data.conversion_rates.SEK;
+        warningP.innerHTML = "NOTE: Currency values are updated every 30 minutes.";
     } catch(error){
         console.log('Error in fetching values from API: ', error);
         switch(country) {
@@ -80,7 +82,9 @@ async function getExchangeRates(url: string, countryRates: ExchangeRates, countr
             case "SEK":
                 countryRates = sekRates;
                 break;
+            default: alert('An error occured');
         }
+        warningP.innerHTML = "WARNING: Exchange rates are not up to date. Using rates from 2025-01-09.";
     }
     return countryRates;
 }

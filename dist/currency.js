@@ -8,12 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const usdURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/latest/U`;
+const usdURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/latest/USD`;
 const eurURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/latest/EUR`;
 const gbpURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/latest/GBP`;
 const sekURL = `https://v6.exchangerate-api.com/v6/d6fe1491c4dc718be3b3fffe/latest/SEK`;
 let usdRates = {
-    USD: 2,
+    USD: 1,
     EUR: 0.9696,
     GBP: 0.8084,
     SEK: 11.1599,
@@ -40,11 +40,13 @@ let sekRates = {
 const currencyInputBox = document.getElementById('currency-input-box');
 const currencyOutputBox = document.getElementById('currency-output-box');
 const currencyConvertButton = document.getElementById('currency-convert-button');
+const warningP = document.getElementById('currency-warning-text');
 /**
  *
  * @param url url to fetch exchange rates from ExchangeRate-api
  * @param countryRates ExchangeRates interface to store the fetched rates
  * @returns ExchangeRates object with the fetched rates
+ * If an error occurs, the function will return the hardcoded rates for the currency
  */
 function getExchangeRates(url, countryRates, country) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -55,6 +57,7 @@ function getExchangeRates(url, countryRates, country) {
             countryRates.EUR = data.conversion_rates.EUR;
             countryRates.GBP = data.conversion_rates.GBP;
             countryRates.SEK = data.conversion_rates.SEK;
+            warningP.innerHTML = "NOTE: Currency values are updated every 30 minutes.";
         }
         catch (error) {
             console.log('Error in fetching values from API: ', error);
@@ -71,9 +74,10 @@ function getExchangeRates(url, countryRates, country) {
                 case "SEK":
                     countryRates = sekRates;
                     break;
+                default: alert('An error occured');
             }
+            warningP.innerHTML = "WARNING: Exchange rates are not up to date. Using rates from 2025-01-09.";
         }
-        console.log('Rates fetched: ', countryRates);
         return countryRates;
     });
 }
@@ -107,7 +111,6 @@ function convertCurrency() {
                     else {
                         newUsdRates = usdCookies;
                     }
-                    console.log(newUsdRates);
                     calculateUSD(currencyInputValue, toTypeValue, newUsdRates);
                     break;
                 case "EUR" /* Currency.EUR */:
@@ -120,7 +123,6 @@ function convertCurrency() {
                     else {
                         newEurRates = eurCookies;
                     }
-                    console.log(newEurRates);
                     calculateEUR(currencyInputValue, toTypeValue, newEurRates);
                     break;
                 case "GBP" /* Currency.GBP */:
@@ -133,7 +135,6 @@ function convertCurrency() {
                     else {
                         newGbpRates = gbpCookies;
                     }
-                    console.log(newGbpRates);
                     calculateGBP(currencyInputValue, toTypeValue, newGbpRates);
                     break;
                 case "SEK" /* Currency.SEK */:
@@ -146,7 +147,6 @@ function convertCurrency() {
                     else {
                         newSekRates = sekCookies;
                     }
-                    console.log(newSekRates);
                     calculateSEK(currencyInputValue, toTypeValue, newSekRates);
                     break;
                 default: alert('Please select a valid type');

@@ -3,11 +3,11 @@ const volumeOutputBox = document.getElementById('volume-output-box');
 const volumeInputBox = document.getElementById('volume-input-box');
 const volumeConvertButton = document.getElementById('volume-convert-button');
 function transformInput() {
-    const inputValue = volumeCheckForCommas(volumeInputBox.value);
     const fromType = document.getElementById('volume-from-select');
     const toType = document.getElementById('volume-to-select');
     const fromTypeValue = fromType.value;
     const toTypeValue = toType.value;
+    const inputValue = volumeCheckForCommas(volumeInputBox.value);
     let mlValue = 0;
     if (fromTypeValue == toTypeValue) {
         alert('Please select two different types');

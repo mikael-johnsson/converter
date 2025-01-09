@@ -36,12 +36,21 @@ let sekRates = {
     GBP: 0,
     SEK: 0,
 };
+// Currency converter elements
+const currencyInputBox = document.getElementById('currency-input-box');
+const currencyOutputBox = document.getElementById('currency-output-box');
+const currencyConvertButton = document.getElementById('currency-convert-button');
+/**
+ *
+ * @param url url to fetch exchange rates from ExchangeRate-api
+ * @param countryRates ExchangeRates interface to store the fetched rates
+ * @returns ExchangeRates object with the fetched rates
+ */
 function getExchangeRates(url, countryRates) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const response = yield fetch(url);
             const data = yield response.json();
-            console.log("API request sent");
             countryRates.USD = data.conversion_rates.USD;
             countryRates.EUR = data.conversion_rates.EUR;
             countryRates.GBP = data.conversion_rates.GBP;
@@ -53,9 +62,14 @@ function getExchangeRates(url, countryRates) {
         return countryRates;
     });
 }
-const currencyInputBox = document.getElementById('currency-input-box');
-const currencyOutputBox = document.getElementById('currency-output-box');
-const currencyConvertButton = document.getElementById('currency-convert-button');
+/**
+ * Function that:
+ * Checks currency to convert from
+ * Changes commas to dots in input
+ * Checks if up to date rates are stored in cookies
+ * sets new rates in cookies if empty
+ * Calls the correct conversion function based on the currency to convert from
+ */
 function convertCurrency() {
     return __awaiter(this, void 0, void 0, function* () {
         const currencyInputValue = currencyCheckForCommas(currencyInputBox.value);
@@ -71,27 +85,49 @@ function convertCurrency() {
                 case "USD" /* Currency.USD */:
                     let newUsdRates;
                     let usdCookies = checkCookies("USDcurrency");
-                    if (usdCookies.USD == 0) {
+                    if (isRatesEmpty(usdCookies)) {
                         newUsdRates = yield getExchangeRates(usdURL, usdRates);
-                        setCookies(newUsdRates);
-                        console.log("New USD rates: ", newUsdRates);
+                        setCookies(newUsdRates, "USDcurrency");
                     }
                     else {
                         newUsdRates = usdCookies;
-                        console.log("USD rates from cookies: ", newUsdRates);
                     }
                     calculateUSD(currencyInputValue, toTypeValue, newUsdRates);
                     break;
                 case "EUR" /* Currency.EUR */:
-                    let newEurRates = yield getExchangeRates(eurURL, eurRates);
+                    let newEurRates;
+                    let eurCookies = checkCookies("EURcurrency");
+                    if (isRatesEmpty(eurCookies)) {
+                        newEurRates = yield getExchangeRates(eurURL, eurRates);
+                        setCookies(newEurRates, "EURcurrency");
+                    }
+                    else {
+                        newEurRates = eurCookies;
+                    }
                     calculateEUR(currencyInputValue, toTypeValue, newEurRates);
                     break;
                 case "GBP" /* Currency.GBP */:
-                    let newGbpRates = yield getExchangeRates(gbpURL, gbpRates);
+                    let newGbpRates;
+                    let gbpCookies = checkCookies("GBPcurrency");
+                    if (isRatesEmpty(gbpCookies)) {
+                        newGbpRates = yield getExchangeRates(gbpURL, gbpRates);
+                        setCookies(newGbpRates, "GBPcurrency");
+                    }
+                    else {
+                        newGbpRates = gbpCookies;
+                    }
                     calculateGBP(currencyInputValue, toTypeValue, newGbpRates);
                     break;
                 case "SEK" /* Currency.SEK */:
-                    let newSekRates = yield getExchangeRates(sekURL, sekRates);
+                    let newSekRates;
+                    let sekCookies = checkCookies("SEKcurrency");
+                    if (isRatesEmpty(sekCookies)) {
+                        newSekRates = yield getExchangeRates(sekURL, sekRates);
+                        setCookies(newSekRates, "SEKcurrency");
+                    }
+                    else {
+                        newSekRates = sekCookies;
+                    }
                     calculateSEK(currencyInputValue, toTypeValue, newSekRates);
                     break;
                 default: alert('Please select a valid type');
@@ -99,10 +135,21 @@ function convertCurrency() {
         }
     });
 }
+/**
+ *
+ * @param input string to check for commas and replace them with dots
+ * @returns a number with commas replaced by dots
+ */
 function currencyCheckForCommas(input) {
     const transformedInput = input.replace(',', '.');
     return parseFloat(transformedInput);
 }
+/**
+ * Calculates the conversion from USD to the selected currency
+ * @param input value to convert
+ * @param toType currency to convert to
+ * @param rates fetched rate to convert with
+ */
 function calculateUSD(input, toType, rates) {
     switch (toType) {
         case "EUR" /* Currency.EUR */:
@@ -112,11 +159,17 @@ function calculateUSD(input, toType, rates) {
             currencyOutputBox.innerHTML = `${(input * rates.GBP).toFixed(2)} GBP`;
             break;
         case "SEK" /* Currency.SEK */:
-            currencyOutputBox.innerHTML = `${(input * rates.EUR).toFixed(2)} SEK`;
+            currencyOutputBox.innerHTML = `${(input * rates.SEK).toFixed(2)} SEK`;
             break;
         default: alert('Please select a valid type');
     }
 }
+/**
+ * Calculates the conversion from EUR to the selected currency
+ * @param input value to convert
+ * @param toType currency to convert to
+ * @param rates fetched rate to convert with
+ */
 function calculateEUR(input, toType, rates) {
     switch (toType) {
         case "USD" /* Currency.USD */:
@@ -131,6 +184,12 @@ function calculateEUR(input, toType, rates) {
         default: alert('Please select a valid type');
     }
 }
+/**
+ * Calculates the conversion from GBP to the selected currency
+ * @param input value to convert
+ * @param toType currency to convert to
+ * @param rates fetched rate to convert with
+ */
 function calculateGBP(input, toType, rates) {
     switch (toType) {
         case "USD" /* Currency.USD */:
@@ -145,6 +204,12 @@ function calculateGBP(input, toType, rates) {
         default: alert('Please select a valid type');
     }
 }
+/**
+ * Calculates the conversion from SEK to the selected currency
+ * @param input value to convert
+ * @param toType currency to convert to
+ * @param rates fetched rate to convert with
+ */
 function calculateSEK(input, toType, rates) {
     switch (toType) {
         case "USD" /* Currency.USD */:
@@ -159,22 +224,39 @@ function calculateSEK(input, toType, rates) {
         default: alert('Please select a valid type');
     }
 }
+// Event listener for the currency convert button
 currencyConvertButton === null || currencyConvertButton === void 0 ? void 0 : currencyConvertButton.addEventListener('click', (e) => {
     e.preventDefault();
     convertCurrency();
 });
-function setCookies(rates) {
+/**
+ * Sets each currencies conversion rates in cookies
+ * @param rates rates to store in cookies
+ * @param name name of currency to store in cookie
+ */
+function setCookies(rates, name) {
     // Set cookie to expire in 30 minutes
     let date = new Date();
     date.setTime(date.getTime() + (0.5 * 3600 * 1000));
     // Set cookie
     const stringObject = JSON.stringify(rates);
-    document.cookie = `USDcurrency=${stringObject}; expires=${date.toUTCString()}; path=/`;
+    document.cookie = `${name}=${stringObject}; expires=${date.toUTCString()}; path=/`;
 }
+/**
+ *
+ * @param currencyName name of currency to check for in cookies
+ * @returns ExchangeRates object with the rates stored in cookies
+ * or an object with all rates set to 0 if no cookie is found
+ */
 function checkCookies(currencyName) {
     const cDecoded = decodeURIComponent(document.cookie);
     const cArray = cDecoded.split("; ");
-    let rates = {};
+    let rates = {
+        USD: 0,
+        EUR: 0,
+        GBP: 0,
+        SEK: 0,
+    };
     cArray.forEach(cookie => {
         if (cookie.indexOf(currencyName) == 0) {
             const cookiePairs = cookie.split("=")[1];
@@ -184,7 +266,15 @@ function checkCookies(currencyName) {
     });
     return rates;
 }
-function deleteCookie(name) {
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+/**
+ *
+ * @param rates ExchangeRates object to check if all rates are 0
+ * @returns True if all rates are 0, false if any rate is not 0
+ */
+function isRatesEmpty(rates) {
+    if (rates.USD == 0 && rates.EUR == 0 && rates.GBP == 0 && rates.SEK == 0) {
+        return true;
+    }
+    return false;
 }
 //# sourceMappingURL=currency.js.map

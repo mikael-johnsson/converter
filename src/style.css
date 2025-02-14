@@ -78,8 +78,12 @@ label {
     border: 2px solid #3b0b0e;
     border-radius: 12px;
     padding: 6px;
-    background-color: #BCD2EE;
+    background-color: #ADC8EB;
     color: #3b0b0e;
+}
+
+.box:active {
+    background-color: #ADC8EB;
 }
 
 /* Volume */

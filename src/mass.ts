@@ -10,6 +10,7 @@ const massConvertButton = document.getElementById('mass-convert-button') as HTML
  */
 function checkTypes(e: MouseEvent): void {
     e.preventDefault();
+    console.log("inside checkTypes")
     const fromType = document.getElementById('mass-from-select') as HTMLSelectElement
     const toType = document.getElementById('mass-to-select') as HTMLSelectElement
     const fromTypeValue = fromType.value
@@ -37,6 +38,7 @@ function checkTypes(e: MouseEvent): void {
             default: alert('Please select a valid type');
         }
         gValue = gValue * inputValue
+        calculateMass(gValue, toTypeValue)
     }
 }
 
@@ -75,4 +77,5 @@ function calculateMass(input: number, toType: string){
 }
 
 // Eventlistener for the convert button
-massConvertButton?.addEventListener('click', checkTypes)
+massConvertButton?.addEventListener('click', checkTypes);
+

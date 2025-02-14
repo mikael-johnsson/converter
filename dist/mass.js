@@ -9,6 +9,7 @@ const massConvertButton = document.getElementById('mass-convert-button');
  */
 function checkTypes(e) {
     e.preventDefault();
+    console.log("inside checkTypes");
     const fromType = document.getElementById('mass-from-select');
     const toType = document.getElementById('mass-to-select');
     const fromTypeValue = fromType.value;
@@ -35,6 +36,7 @@ function checkTypes(e) {
             default: alert('Please select a valid type');
         }
         gValue = gValue * inputValue;
+        calculateMass(gValue, toTypeValue);
     }
 }
 /**

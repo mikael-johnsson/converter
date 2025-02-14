@@ -16,7 +16,6 @@ function getIBMData() {
         try {
             const response = yield fetch(IBMDataUrl);
             const data = yield response.json();
-            console.log("IBM data 25.01.08: ", data["Time Series (Daily)"]["2025-01-08"]);
         }
         catch (error) {
             console.error("Error fetching IBM data: ", error);
